@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Deliberately empty.
+
+	     The app runs under the hardened runtime but is NOT sandboxed: it has to
+	     delete files in ~/Library/Application Support and ~/Library/Caches,
+	     which a sandboxed app cannot reach outside its own container.
+
+	     None of what it does needs an entitlement — those directories are
+	     ordinary user data rather than TCC-protected locations, and signalling
+	     another process owned by the same user is unprivileged. Adding
+	     entitlements we don't need would only widen the attack surface and slow
+	     notarization down. -->
+</dict>
+</plist>

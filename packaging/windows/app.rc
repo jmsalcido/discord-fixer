@@ -1,0 +1,6 @@
+#include <winuser.h>
+
+// Explorer uses the numerically lowest icon resource for the file's thumbnail.
+1 ICON "assets/icon.ico"
+
+1 RT_MANIFEST "packaging/windows/app.manifest"

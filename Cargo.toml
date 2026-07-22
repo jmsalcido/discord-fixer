@@ -1,0 +1,35 @@
+[package]
+name = "discord-desktop-fixer"
+version = "0.1.0"
+edition = "2024"
+description = "Clears the caches that make the Discord desktop app get stuck, without logging you out"
+license = "MIT"
+repository = "https://github.com/jmsalcido/discord-desktop-fixer"
+readme = "README.md"
+keywords = ["discord", "cache", "utility"]
+categories = ["command-line-utilities"]
+
+[dependencies]
+anyhow = "1.0.104"
+dirs = "6.0.0"
+eframe = "0.35.0"
+egui = "0.35.0"
+sysinfo = "0.39.6"
+walkdir = "2.5.0"
+
+[dev-dependencies]
+tempfile = "3.27.0"
+
+[build-dependencies]
+embed-resource = "3.0.11"
+
+# This is a small utility people download over a home connection and run once,
+# so binary size matters more than compile time.
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true
+# Unwinding is kept deliberately: a panic mid-clean should unwind and let the
+# process report what happened, not abort with no explanation.
+panic = "unwind"

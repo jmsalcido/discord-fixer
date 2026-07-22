@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Discord Desktop Fixer
+GenericName=Discord Cache Cleaner
+Comment=Clears the caches that make Discord get stuck
+Exec=discord-desktop-fixer
+Icon=discord-desktop-fixer
+Terminal=false
+Categories=Utility;
+Keywords=discord;cache;clear;fix;repair;stuck;
+StartupWMClass=discord-desktop-fixer

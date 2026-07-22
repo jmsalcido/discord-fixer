@@ -1,0 +1,4 @@
+# Pinned so local builds and CI agree, and so `edition = "2024"` is available.
+[toolchain]
+channel = "stable"
+components = ["rustfmt", "clippy"]
