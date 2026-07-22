@@ -17,7 +17,10 @@ jobs:
   # app can log people out, and nothing ships.
   test:
     strategy:
-      fail-fast: true
+      # Let every platform report. Cancelling siblings on the first failure
+      # hides whether the others were also broken, which costs a whole extra
+      # release cycle to find out.
+      fail-fast: false
       matrix:
         os: [macos-15, windows-latest, ubuntu-22.04]
     runs-on: ${{ matrix.os }}
@@ -25,6 +28,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
       - uses: Swatinem/rust-cache@v2
 
       - name: Install Linux GUI dependencies

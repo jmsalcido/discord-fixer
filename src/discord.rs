@@ -45,6 +45,10 @@ impl Flavor {
         }
     }
 
+    /// Compiled only where it means something. Bundle identifiers are a macOS
+    /// concept and `platform::macos` is the sole caller, so on other targets
+    /// this would be dead code — which `-D warnings` correctly rejects.
+    #[cfg(target_os = "macos")]
     pub fn macos_bundle_id(self) -> &'static str {
         match self {
             Flavor::Stable => "com.hnc.Discord",
@@ -412,6 +416,7 @@ mod tests {
             for b in Flavor::ALL {
                 if a != b {
                     assert_ne!(a.data_dir_name(), b.data_dir_name());
+                    #[cfg(target_os = "macos")]
                     assert_ne!(a.macos_bundle_id(), b.macos_bundle_id());
                 }
             }
