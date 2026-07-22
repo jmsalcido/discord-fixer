@@ -19,8 +19,9 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [macos-14, windows-latest, ubuntu-22.04]
+        os: [macos-15, windows-latest, ubuntu-22.04]
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
@@ -40,7 +41,11 @@ jobs:
 
   macos:
     needs: test
-    runs-on: macos-14
+    # Pinned rather than macos-latest: this job signs and notarizes a release
+    # artifact, so the toolchain shouldn't change under us when GitHub migrates
+    # the -latest alias. An arm64 runner still cross-builds the x86_64 slice.
+    runs-on: macos-15
+    timeout-minutes: 60
     # Job-level so the steps below can test it in `if:` — a step cannot read the
     # env block it declares itself, and `secrets` isn't available in `if`.
     env:
@@ -94,6 +99,7 @@ jobs:
   windows:
     needs: test
     runs-on: windows-latest
+    timeout-minutes: 45
     env:
       WINDOWS_CERT_PFX: ${{ secrets.WINDOWS_CERT_PFX }}
     steps:
@@ -135,8 +141,10 @@ jobs:
   linux:
     needs: test
     # Oldest supported glibc — binaries built here run on newer distros, but
-    # not the other way around.
+    # not the other way around. Deliberately NOT ubuntu-latest: 24.04 ships
+    # glibc 2.39, which would refuse to run on anything older.
     runs-on: ubuntu-22.04
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
