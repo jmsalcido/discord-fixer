@@ -93,7 +93,9 @@ jobs:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
-        run: ./packaging/macos/bundle.sh
+        # Invoked via `bash` rather than `./` so a missing exec bit on the
+        # script can never fail the release.
+        run: bash packaging/macos/bundle.sh
 
       - uses: actions/upload-artifact@v4
         with:
@@ -163,7 +165,7 @@ jobs:
             libgl1-mesa-dev libxkbcommon-dev libwayland-dev \
             libfuse2 desktop-file-utils
 
-      - run: ./packaging/linux/appimage.sh
+      - run: bash packaging/linux/appimage.sh
 
       - name: Stage raw binary
         run: |
