@@ -117,11 +117,16 @@ if __name__ == "__main__":
     out = sys.argv[1]
     os.makedirs(out, exist_ok=True)
 
-    rgba1024 = render(1024)
-    write_png(os.path.join(out, "icon.png"), 1024, rgba1024)
+    # Master, for the macOS .icns and the README.
+    write_png(os.path.join(out, "icon.png"), 1024, render(1024))
 
-    # Raw RGBA for the runtime window icon — avoids pulling in a PNG decoder.
-    open(os.path.join(out, "icon-256.rgba"), "wb").write(render(256))
+    # 256×256, rendered once and used two ways. linuxdeploy validates that a
+    # file under an NNxNN/apps icon directory is exactly that many pixels, so
+    # the AppImage build needs a real 256px PNG — the 1024 master is rejected.
+    rgba256 = render(256)
+    write_png(os.path.join(out, "icon-256.png"), 256, rgba256)
+    # Raw RGBA for the runtime window icon — avoids a PNG decoder in the binary.
+    open(os.path.join(out, "icon-256.rgba"), "wb").write(rgba256)
 
     ico_sizes = [16, 24, 32, 48, 64, 128, 256]
     pngs = []
@@ -131,4 +136,4 @@ if __name__ == "__main__":
         pngs.append((s, open(tmp, "rb").read()))
         os.remove(tmp)
     write_ico(os.path.join(out, "icon.ico"), pngs)
-    print("wrote icon.png (1024), icon-256.rgba, icon.ico")
+    print("wrote icon.png (1024), icon-256.png, icon-256.rgba, icon.ico")

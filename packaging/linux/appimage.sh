@@ -28,7 +28,9 @@ rm -rf "$APPDIR"
 install -Dm755 "target/release/$BIN_NAME" "$APPDIR/usr/bin/$BIN_NAME"
 install -Dm644 "packaging/linux/$BIN_NAME.desktop" \
   "$APPDIR/usr/share/applications/$BIN_NAME.desktop"
-install -Dm644 assets/icon.png \
+# Must be exactly 256×256 — linuxdeploy rejects a mis-sized file in this dir,
+# so the 1024px master won't do.
+install -Dm644 assets/icon-256.png \
   "$APPDIR/usr/share/icons/hicolor/256x256/apps/$BIN_NAME.png"
 
 TOOL="$(command -v linuxdeploy || true)"
