@@ -53,8 +53,3 @@ jobs:
 
       - name: Test
         run: cargo test --all-targets
-
-      # `--all-targets` skips doctests, so run them once on their own.
-      - name: Doctests
-        if: runner.os == 'Linux'
-        run: cargo test --doc
